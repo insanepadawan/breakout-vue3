@@ -48,7 +48,7 @@ export default {
                 height: 0,
 
                 // paddle x velocity
-                dx: 0.5,
+                dx: 0,
 
                 speed: 5,
 
@@ -98,8 +98,8 @@ export default {
             // prevent paddle from going through walls
             if (this.paddle.x < this.wallSize) {
                 this.paddle.x = this.wallSize
-            } else if (this.paddle.x + this.brickWidth > this.canvas.width - this.wallSize) {
-                this.paddle.x = this.canvas.width - this.wallSize - (this.brickWidth * 3)
+            } else if (this.paddle.x + (this.brickWidth * 4) > this.canvas.width - this.wallSize) {
+                this.paddle.x = this.canvas.width - this.wallSize - (this.brickWidth * 4)
             }
 
             // move ball by it's velocity
@@ -200,8 +200,8 @@ export default {
         // set paddle
         // place the paddle horizontally in the middle of the screen
         this.paddle.x = this.canvas.width / 2 - this.brickWidth / 2
-        this.paddle.width = this.brickWidth * 6
-        this.paddle.height = this.brickHeight * 4
+        this.paddle.width = this.brickWidth * 4
+        this.paddle.height = this.brickHeight * 3
 
 
         // set bricks

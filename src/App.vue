@@ -51,13 +51,15 @@ export default {
                 dx: 0.5,
 
                 speed: 5,
+
+                img: null,
             },
 
             ball: {
                 x: 130,
                 y: 260,
-                width: 6,
-                height: 6,
+                width: 20,
+                height: 20,
                 multiplier: 1.05,
 
                 // how fast the ball should go in either the x or y direction
@@ -65,10 +67,13 @@ export default {
 
                 // ball velocity
                 dx: 0,
-                dy: 0
+                dy: 0,
+
+                img: null,
             },
 
-            brick: {}
+            brick: {},
+            render: false,
         }
     },
 
@@ -170,8 +175,8 @@ export default {
 
             // draw ball if it's moving
             if (this.ball.dx || this.ball.dy) {
-                this.context.fillStyle = 'pink'
-                this.context.fillRect(this.ball.x, this.ball.y, this.ball.height, this.ball.width)
+                // this.context.fillRect(this.ball.x, this.ball.y, this.ball.height, this.ball.width)
+                this.context.drawImage(this.ball.img, this.ball.x, this.ball.y, this.ball.width, this.ball.height)
             }
 
             // draw bricks
@@ -181,8 +186,8 @@ export default {
             })
 
             // draw paddle
-            this.context.fillStyle = 'cyan'
-            this.context.fillRect(this.paddle.x, this.paddle.y, this.paddle.width, this.paddle.height)
+            // this.context.fillRect(this.paddle.x, this.paddle.y, this.paddle.width, this.paddle.height)
+            this.context.drawImage(this.paddle.img, this.paddle.x, this.paddle.y, this.paddle.width, this.paddle.height)
         }
 
     },
@@ -195,8 +200,8 @@ export default {
         // set paddle
         // place the paddle horizontally in the middle of the screen
         this.paddle.x = this.canvas.width / 2 - this.brickWidth / 2
-        this.paddle.width = this.brickWidth * 2
-        this.paddle.height = this.brickHeight / 2
+        this.paddle.width = this.brickWidth * 6
+        this.paddle.height = this.brickHeight * 4
 
 
         // set bricks
@@ -218,10 +223,12 @@ export default {
         document.addEventListener('keydown', (e) => {
             // left arrow key
             if (e.key === 'ArrowLeft') {
+                e.preventDefault()
                 this.paddle.dx = -this.paddle.speed
             }
             // right arrow key
             else if (e.key === 'ArrowRight') {
+                e.preventDefault()
                 this.paddle.dx = this.paddle.speed
             }
 
@@ -239,6 +246,14 @@ export default {
                 this.paddle.dx = 0
             }
         })
+
+        this.ball.img = new Image()
+        this.ball.img.onload = () => this.render = true
+        this.ball.img.src = './ball.svg'
+
+        this.paddle.img = new Image()
+        this.paddle.img.onload = () => this.render = true
+        this.paddle.img.src = './orbit-paddle.png'
 
         this.loop()
     },

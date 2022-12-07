@@ -5,10 +5,8 @@ export default {
             canvas: null,
             context: null,
             colorMap: {
-                'R': 'red',
-                'O': 'orange',
-                'G': 'green',
-                'Y': 'yellow'
+                'P': 'pink',
+                'C': 'cyan'
             },
             brickGap: 2,
             brickWidth: 25,
@@ -23,20 +21,10 @@ export default {
                         [],
                         [],
                         [],
-                        ['R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R'],
-                        ['R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R'],
-                        ['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O'],
-                        ['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O'],
-                        ['G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G'],
-                        ['G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G'],
-                        ['Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y'],
-                        ['Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y'],
-                        ['G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G'],
-                        ['G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G'],
-                        ['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O'],
-                        ['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O'],
-                        ['R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R'],
-                        ['R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R'],
+                        ['C', 'C', 'C', 'P', 'C', 'C', 'C', 'P', 'C', 'C', 'P', 'C', 'C', 'C'],
+                        ['C', 'P', 'C', 'C', 'C', 'C', 'C', 'P', 'C', 'C', 'C', 'C', 'P', 'C'],
+                        ['C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C'],
+                        ['C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C']
                     ]
                 ],
             colorCode: '',
@@ -50,7 +38,7 @@ export default {
                 // paddle x velocity
                 dx: 0,
 
-                speed: 5,
+                speed: 8,
 
                 img: null,
             },
@@ -146,7 +134,7 @@ export default {
                 if (this.collides(this.ball, this.brick)) {
 
                     // increase the speed of the game
-                    this.paddle.speed *= 1.05
+                    // this.paddle.speed *= 1.05
 
                     // remove brick from the bricks array
                     this.bricks.splice(i, 1)
@@ -161,6 +149,17 @@ export default {
                     // ball is on either side of the brick, change x velocity
                     else {
                         this.ball.dx *= -1
+                    }
+
+
+                    console.log(this.bricks.length)
+                    if (this.brick.color === 'pink') {
+                        console.log('мысль')
+                    }
+
+                    if (this.bricks.length === 0) {
+                        console.log('ended')
+                        alert('Игра закончена!')
                     }
 
                     break
@@ -181,7 +180,25 @@ export default {
 
             // draw bricks
             this.bricks.forEach((brick) => {
-                this.context.fillStyle = brick.color
+                let grd = this.context.
+                createLinearGradient(
+                    (brick.x + (brick.width / 2)), (brick.y),
+                    (brick.x + (brick.width / 2)), (brick.y + brick.height))
+                if (brick.color === 'cyan') {
+                    // console.log(brick)
+                    grd.addColorStop(0, "green")
+                    grd.addColorStop(0.5, "cyan")
+                    grd.addColorStop(1, "green")
+                }
+                if (brick.color === 'pink') {
+                    // console.log(brick)
+                    grd.addColorStop(0, "#a62276")
+                    grd.addColorStop(0.1, "#ffd3e6")
+                    grd.addColorStop(0.5, "#fc4697")
+                    grd.addColorStop(1, "#fe87c2")
+                }
+
+                this.context.fillStyle = grd
                 this.context.fillRect(brick.x, brick.y, brick.width, brick.height)
             })
 
